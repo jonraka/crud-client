@@ -1,29 +1,17 @@
-import Container from '../Componenets/Container';
-import UsersTable from '../Componenets/UsersTable';
-import styled from 'styled-components';
-import Button from '../Componenets/Button';
-
-const StyledHeading = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    align-items: center;
-
-    & .name {
-        font-size: 2rem;
-    }
-`;
-
+import Container from '../Components/Container';
+import UsersTable from '../Components/UsersTable';
+import Button from '../Components/Button';
+import { Link } from "react-router-dom";
+import Heading from '../Components/Heading';
 
 export default function UsersPage() {
     return (
         <Container>
-            <StyledHeading>
-                <div className='name'>Vartotojai</div>
-                <div className='buttons'>
+            <Heading title="Vartotojai">
+                <Link to="/add-user">
                     <Button>Pridėti naują vartotoją</Button>
-                </div>
-            </StyledHeading>
+                </Link>
+            </Heading>
             <UsersTable />
         </Container>
     )

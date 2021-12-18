@@ -53,10 +53,13 @@ export default function UsersTable() {
     })
 
     useEffect(() => {
+        let isSubscribed = true;
+
         fetch(process.env.REACT_APP_API_ENDPOINT + '/users').then(res => {
             if (res.status === 404) throw new Error('Serveris neveikia, pabandykite vėliau.');
             return res.json();
         }).then(res => {
+            if(!isSubscribed) return;
             if (res.error) throw new Error(res.error);
 
             setTimeout(() => {
@@ -67,12 +70,18 @@ export default function UsersTable() {
                 })
             }, 2000);
         }).catch(err => {
+            if(!isSubscribed) return;
+
             setState({
                 loading: false,
                 data: null,
                 error: err.message
             })
         })
+
+        return () => {
+            isSubscribed = false;
+        }
     }, []);
 
     return (
@@ -87,7 +96,7 @@ export default function UsersTable() {
                 </tr>
             </thead>
             <tbody>
-                {state.loading && <tr><td colSpan={5}>Loading</td></tr>}
+                {state.loading && <tr><td colSpan={5}>Kraunama</td></tr>}
                 {state.error && <tr><td colSpan={5}>{state.error}</td></tr>}
                 {state.data && state.data.map(({ _id, name, age, email }) =>
                     <tr key={_id}>
