@@ -1,8 +1,7 @@
+import UsersPage from "./Pages/UsersPage";
 
 export default function App() {
   return (
-    <div>
-      app
-    </div>
+    <UsersPage/>
   );
 }
