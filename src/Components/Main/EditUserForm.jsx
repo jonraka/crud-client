@@ -57,7 +57,7 @@ const EditUserSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Vardas per trumpas')
     .max(100, 'Vardas per ilgas')
-    .matches(/^[a-z]+$/i, 'Netinkamas vardas'),
+    .matches(/^[a-ząčęėįšųūž]+$/i, 'Netinkamas vardas, turi būti tik raidės'),
   age: Yup.number().min(1, 'Netinkamas amžius').max(120, 'Netinkamas amžius'),
   email: Yup.string().email('Netinkamas el. paštas'),
   password: Yup.string()

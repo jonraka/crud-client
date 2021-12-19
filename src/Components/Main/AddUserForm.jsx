@@ -57,7 +57,7 @@ const NewUserSchema = Yup.object().shape({
     .min(2, 'Vardas per trumpas')
     .max(100, 'Vardas per ilgas')
     .required('Vardas negali būti tuščias')
-    .matches(/^[a-z]+$/i, 'Netinkamas vardas'),
+    .matches(/^[a-ząčęėįšųūž]+$/i, 'Netinkamas vardas, turi būti tik raidės'),
   age: Yup.number()
     .min(1, 'Netinkamas amžius, turi būti nuo 1-o meto.')
     .max(120, 'Netinkamas amžius, turi būti iki 120-ties metų')

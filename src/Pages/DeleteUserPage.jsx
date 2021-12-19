@@ -1,7 +1,7 @@
-import Heading from '../Components/Main/Heading';
-import Container from '../Components/Main/Container';
-import { useParams } from 'react-router-dom';
+import Heading from '../Components/UI/Heading';
+import Container from '../Components/UI/Container';
 import DeleteUserBox from '../Components/Main/DeleteUserBox';
+import { useParams } from 'react-router-dom';
 
 export default function DeleteUserPage() {
   const { userId } = useParams();

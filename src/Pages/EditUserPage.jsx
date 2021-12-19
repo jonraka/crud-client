@@ -1,5 +1,5 @@
-import Heading from '../Components/Main/Heading';
-import Container from '../Components/Main/Container';
+import Heading from '../Components/UI/Heading';
+import Container from '../Components/UI/Container';
 import EditUserForm from '../Components/Main/EditUserForm';
 import { useParams } from 'react-router-dom';
 

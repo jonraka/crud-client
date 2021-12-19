@@ -1,7 +1,7 @@
-import Container from '../Components/Main/Container';
 import UsersTable from '../Components/Main/UsersTable';
+import Container from '../Components/UI/Container';
+import Heading from '../Components/UI/Heading';
 import Button from '../Components/UI/Button';
-import Heading from '../Components/Main/Heading';
 import { Link } from 'react-router-dom';
 
 export default function UsersPage() {
