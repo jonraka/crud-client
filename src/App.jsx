@@ -1,10 +1,10 @@
-import { Routes, Route } from "react-router-dom";
-import UsersPage from "./Pages/UsersPage";
-import NotFoundPage from "./Pages/NotFoundPage";
-import AddUserPage from "./Pages/AddUserPage";
-import EditUserPage from "./Pages/EditUserPage";
-import { Navigate } from "react-router-dom";
-import DeleteUserPage from "./Pages/DeleteUserPage";
+import { Routes, Route } from 'react-router-dom';
+import UsersPage from './Pages/UsersPage';
+import NotFoundPage from './Pages/NotFoundPage';
+import AddUserPage from './Pages/AddUserPage';
+import EditUserPage from './Pages/EditUserPage';
+import { Navigate } from 'react-router-dom';
+import DeleteUserPage from './Pages/DeleteUserPage';
 
 export default function App() {
   return (

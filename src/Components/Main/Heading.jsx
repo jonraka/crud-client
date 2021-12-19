@@ -3,25 +3,29 @@ import { Link } from 'react-router-dom';
 import Button from '../UI/Button';
 
 const StyledHeading = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  align-items: center;
 
-    & .heading-left {
-        font-size: 2rem;
-    }
+  & .heading-left {
+    font-size: 2rem;
+  }
 `;
 
-export default function Heading({ title = "", backPath = "/", children }) {
-    return (
-        <StyledHeading>
-            <div className='heading-left'>{title}</div>
-            <div className='heading-right'>
-                {children ? children : <Link to={backPath}>
-                    <Button>Grįžti atgal</Button>
-                </Link>}
-            </div>
-        </StyledHeading>
-    )
-};
+export default function Heading({ title = '', backPath = '/', children }) {
+  return (
+    <StyledHeading>
+      <div className="heading-left">{title}</div>
+      <div className="heading-right">
+        {children ? (
+          children
+        ) : (
+          <Link to={backPath}>
+            <Button>Grįžti atgal</Button>
+          </Link>
+        )}
+      </div>
+    </StyledHeading>
+  );
+}

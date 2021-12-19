@@ -8,5 +8,5 @@ export default function AddUserPage() {
       <Heading title="Pridėti naują vartotoją" backPath="/users" />
       <AddUserForm />
     </Container>
-  )
-};
+  );
+}
