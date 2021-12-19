@@ -45,27 +45,23 @@ const StyledForm = styled(Form)`
   }
 `;
 
-const NewUserSchema = Yup.object().shape({
+const EditUserSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Vardas per trumpas')
-    .max(100, 'Vardas per ilgas')
-    .required('Vardas negali būti tuščias'),
+    .max(100, 'Vardas per ilgas'),
   age: Yup.number()
     .min(1, 'Netinkamas amžius')
-    .max(120, 'Netinkamas amžius')
-    .required('Amžius negali būti tuščias'),
+    .max(120, 'Netinkamas amžius'),
   email: Yup.string()
-    .email('Netinkamas el. paštas')
-    .required('El. paštas negali būti tuščias'),
+    .email('Netinkamas el. paštas'),
   password: Yup.string()
     .min(5, 'Slaptažodis per trumpas')
-    .max(100, 'Slaptažodis per ilgas')
-    .required('Slapažodis negali būti tuščias'),
-  passwordConfirmation: Yup.string().required('Slaptažodžio pakartojimas negali būti tuščias')
+    .max(100, 'Slaptažodis per ilgas'),
+  passwordConfirmation: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Slaptažodiai nesutampa')
 });
 
-export default function AddEditUserForm() {
+export default function EditUserForm() {
   const navigate = useNavigate();
 
   return (
@@ -78,29 +74,34 @@ export default function AddEditUserForm() {
         passwordConfirmation: '',
         mainErrors: ''
       }}
-      validationSchema={NewUserSchema}
-      onSubmit={({ name, age, email, password }, { setSubmitting, setFieldErrors }) => {
-        fetch(process.env.REACT_APP_API_ENDPOINT + '/users', {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify({ name, age, email, password })
-        }).then(res => {
-          if (res.status === 404) throw new Error('Šiuo metu serveris neveikia');
-          return res.json()
-        }).then(res => {
-          if (res.success) {
-            toast.success('Vartotojas sukūrtas');
-            navigate('/users');
-          } else {
-
-          }
-          setSubmitting(false);
-        }).catch(err => {
-          setFieldErrors('mainErrors', `Vidinė klaida (${err.message})`);
-          setSubmitting(false);
-        })
+      validationSchema={EditUserSchema}
+      onSubmit={({ name, age, email, password }, { setSubmitting, setFieldError }) => {
+        if(![name, age, email, password].some(val => val !== '')){
+            setFieldError('mainErrors', `Bent vienas laukas turi būti pakeistas`);
+            setSubmitting(false);
+        }else{
+            fetch(process.env.REACT_APP_API_ENDPOINT + '/users', {
+                method: 'PUT',
+                headers: {
+                  'content-type': 'application/json'
+                },
+                body: JSON.stringify({ name, age, email, password })
+              }).then(res => {
+                if (res.status === 404) throw new Error('Šiuo metu serveris neveikia');
+                return res.json()
+              }).then(res => {
+                if (res.success) {
+                  toast.success('Vartotojas sukūrtas');
+                  navigate('/users');
+                } else {
+                  setFieldError('mainErrors', res.error || 'Vidinė klaida');
+                }
+                setSubmitting(false);
+              }).catch(err => {
+                setFieldError('mainErrors', `Vidinė klaida (${err.message})`);
+                setSubmitting(false);
+              })
+        }
       }}
     >
       {({ isSubmitting }) => (

@@ -9,7 +9,7 @@ export default function DeleteUserPage() {
         <Container>
             <Heading title="Ištrinti vartotoją" backPath="/users" />
             {/* <AddEditUserForm editUserId={userId} /> */}
-            <h1>Ar tikrai norite ištrinti vartotojo {userId}</h1>
+            <h1>Ar tikrai norite ištrinti vartotoją ({userId})</h1>
         </Container>
     )
 };

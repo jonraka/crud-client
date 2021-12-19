@@ -109,7 +109,7 @@ export default function UsersTable() {
                                         <td>{email}</td>
                                         <td>
                                             <Button onClick={() => navigate(`/users/edit/${_id}`, { replace: false })}>Redaguoti</Button>
-                                            <Button>Ištrinti</Button>
+                                            <Button onClick={() => navigate(`/users/delete/${_id}`, { replace: false })}>Ištrinti</Button>
                                         </td>
                                     </tr>
                                 ) : <tr><td colSpan={5}>Vartotojai nerasti, pridėkite bent vieną vartotoją.</td></tr>

@@ -1,6 +1,6 @@
 import Heading from '../Components/Main/Heading';
 import Container from '../Components/Main/Container';
-// import AddEditUserForm from '../Components/Main/AddEditUserForm';
+import EditUserForm from '../Components/Main/EditUserForm';
 import { useParams } from 'react-router-dom';
 
 export default function EditUserPage() {
@@ -8,7 +8,7 @@ export default function EditUserPage() {
     return (
         <Container>
             <Heading title="Keisti vartotojo duomenis" backPath="/users" />
-            {/* <AddEditUserForm editUserId={userId} /> */}
+            <EditUserForm editUserId={userId} />
         </Container>
     )
 };
