@@ -49,7 +49,8 @@ const NewUserSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Vardas per trumpas')
     .max(100, 'Vardas per ilgas')
-    .required('Vardas negali būti tuščias'),
+    .required('Vardas negali būti tuščias')
+    .matches(/^[a-z]+$/i, 'Netinkamas vardas'),
   age: Yup.number()
     .min(1, 'Netinkamas amžius')
     .max(120, 'Netinkamas amžius')
@@ -82,7 +83,7 @@ export default function AddEditUserForm() {
       validationSchema={NewUserSchema}
       onSubmit={(
         { name, age, email, password },
-        { setSubmitting, setFieldErrors }
+        { setSubmitting, setFieldError }
       ) => {
         fetch(process.env.REACT_APP_API_ENDPOINT + '/users', {
           method: 'POST',
@@ -101,11 +102,18 @@ export default function AddEditUserForm() {
               toast.success('Vartotojas sukūrtas');
               navigate('/users');
             } else {
+              if (typeof res.error === 'object') {
+                (res.error || []).forEach(([key, error]) => {
+                  setFieldError(key, error);
+                });
+              } else {
+                setFieldError('mainErrors', res.error || 'Vidinė klaida');
+              }
             }
             setSubmitting(false);
           })
           .catch((err) => {
-            setFieldErrors('mainErrors', `Vidinė klaida (${err.message})`);
+            setFieldError('mainErrors', `Vidinė klaida (${err.message})`);
             setSubmitting(false);
           });
       }}

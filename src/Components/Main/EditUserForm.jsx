@@ -47,7 +47,10 @@ const StyledForm = styled(Form)`
 `;
 
 const EditUserSchema = Yup.object().shape({
-  name: Yup.string().min(2, 'Vardas per trumpas').max(100, 'Vardas per ilgas'),
+  name: Yup.string()
+    .min(2, 'Vardas per trumpas')
+    .max(100, 'Vardas per ilgas')
+    .matches(/^[a-z]+$/i, 'Netinkamas vardas'),
   age: Yup.number().min(1, 'Netinkamas amžius').max(120, 'Netinkamas amžius'),
   email: Yup.string().email('Netinkamas el. paštas'),
   password: Yup.string()
@@ -62,26 +65,28 @@ const EditUserSchema = Yup.object().shape({
 export default function EditUserForm({ userId }) {
   const navigate = useNavigate();
   const ref = useRef();
-
+  const dataFromDatabase = useRef();
   const isValidUserId = mongodbIdRegex.test(userId);
 
   useEffect(() => {
     let isSubscribed = true;
     if (isValidUserId) {
-      fetch(`${process.env.REACT_APP_API_ENDPOINT}/user/${userId}`)
+      fetch(`${process.env.REACT_APP_API_ENDPOINT}/users/${userId}`)
         .then((res) => res.json())
         .then((res) => {
           if (!isSubscribed) return;
+
           if (ref.current) {
             if (res.error) {
               if (res.error === 'Vartotojas nerastas') {
-                toast.error('Vartotojas nerastas');
+                toast.error(res.error);
                 navigate('/users', { replace: true });
               } else {
                 ref.current.setFieldError('mainErrors', res.error);
               }
             } else if (res.data) {
               const { setFieldValue } = ref.current;
+              dataFromDatabase.current = res.data;
               setFieldValue('name', res.data.name);
               setFieldValue('age', res.data.age);
               setFieldValue('email', res.data.email);
@@ -116,45 +121,68 @@ export default function EditUserForm({ userId }) {
       }}
       validationSchema={EditUserSchema}
       onSubmit={(
-        { name, age, email, password },
+        { name, age, email, password, passwordConfirmation },
         { setSubmitting, setFieldError }
       ) => {
-        if (![name, age, email, password].some((val) => val !== '')) {
-          setFieldError('mainErrors', `Bent vienas laukas turi būti pakeistas`);
+        if (password !== passwordConfirmation) {
+          setFieldError('passwordConfirmation', 'Slaptažodžiai turi sutapti');
           setSubmitting(false);
-        } else {
-          fetch(process.env.REACT_APP_API_ENDPOINT + '/users', {
-            method: 'PUT',
-            headers: {
-              'content-type': 'application/json',
-            },
-            body: JSON.stringify({
-              _id: userId,
-              name,
-              age,
-              email,
-              password,
-            }),
+          return;
+        }
+
+        const requestBody = {
+          userId,
+          name,
+          age,
+          email,
+          password,
+        };
+
+        for (const key in requestBody) {
+          if (
+            requestBody[key] === '' ||
+            dataFromDatabase.current?.[key] === requestBody[key]
+          )
+            delete requestBody[key];
+        }
+
+        if (Object.keys(requestBody).length === 1) {
+          setFieldError('mainErrors', 'Duomenys nėra pasikeite');
+          setSubmitting(false);
+          return;
+        }
+
+        fetch(process.env.REACT_APP_API_ENDPOINT + '/users', {
+          method: 'PUT',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        })
+          .then((res) => {
+            if (res.status === 404)
+              throw new Error('Šiuo metu serveris neveikia');
+            return res.json();
           })
-            .then((res) => {
-              if (res.status === 404)
-                throw new Error('Šiuo metu serveris neveikia');
-              return res.json();
-            })
-            .then((res) => {
-              if (res.success) {
-                toast.success('Vartotojas sukūrtas');
-                navigate('/users');
+          .then((res) => {
+            if (res.success) {
+              toast.success('Duomenys atnaujinti');
+              navigate('/users');
+            } else {
+              if (typeof res.error === 'object') {
+                (res.error || []).forEach(([key, error]) => {
+                  setFieldError(key, error);
+                });
               } else {
                 setFieldError('mainErrors', res.error || 'Vidinė klaida');
               }
-              setSubmitting(false);
-            })
-            .catch((err) => {
-              setFieldError('mainErrors', `Vidinė klaida (${err.message})`);
-              setSubmitting(false);
-            });
-        }
+            }
+            setSubmitting(false);
+          })
+          .catch((err) => {
+            setFieldError('mainErrors', `Vidinė klaida (${err.message})`);
+            setSubmitting(false);
+          });
       }}
     >
       {({ isSubmitting }) => (

@@ -27,6 +27,10 @@ const StyledTable = styled.table`
     cursor: default;
   }
 
+  & tbody td {
+    line-break: anywhere;
+  }
+
   & th,
   & td {
     padding: 5px;
@@ -44,6 +48,21 @@ const StyledTable = styled.table`
   /* & tbody tr:hover {
         background-color: rgba(255, 255, 255, 0.01);
     } */
+
+  @media (max-width: 700px) {
+    & tbody td:before {
+      content: attr(data-category) ': ';
+    }
+
+    & tr {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & thead {
+      display: none;
+    }
+  }
 `;
 
 export default function UsersTable() {
@@ -111,11 +130,11 @@ export default function UsersTable() {
         ) : state.data && state.data.length ? (
           state.data.map(({ _id, name, age, email }) => (
             <tr key={_id}>
-              <td>{_id}</td>
-              <td>{name}</td>
-              <td>{age}</td>
-              <td>{email}</td>
-              <td>
+              <td data-category="Identifikatorius">{_id}</td>
+              <td data-category="Vardas">{name}</td>
+              <td data-category="Amžius">{age}</td>
+              <td data-category="El. paštas">{email}</td>
+              <td data-category="Veiksmai">
                 <Button
                   onClick={() =>
                     navigate(`/users/edit/${_id}`, { replace: false })
@@ -135,9 +154,7 @@ export default function UsersTable() {
           ))
         ) : (
           <tr>
-            <td colSpan={5}>
-              Vartotojai nerasti, pridėkite bent vieną vartotoją.
-            </td>
+            <td colSpan={5}>Nėra vartotojų, pridėkite bent vieną vartotoją.</td>
           </tr>
         )}
       </tbody>
