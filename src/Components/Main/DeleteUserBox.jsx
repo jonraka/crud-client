@@ -67,7 +67,7 @@ export default function DeleteUserBox({ userId }) {
 
   return (
     <>
-      <h1>Ar tikrai norite ištrinti vartotoją</h1>
+      <h2>Ar tikrai norite ištrinti vartotoją</h2>
       <div>
         Identifikatorius: {userId}
         {state && ` | Vardas: ${state.name} | El. paštas: ${state.email}`}

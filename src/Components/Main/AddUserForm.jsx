@@ -42,6 +42,13 @@ const StyledForm = styled(Form)`
     background-color: red;
     border-radius: 5px;
     margin-bottom: 10px;
+    color: white;
+    text-shadow: 1px 1px black, 1px 1px black, 2px 2px black, 1px 1px 5px black;
+    font-weight: bold;
+  }
+
+  & .error-border {
+    border-color: red !important;
   }
 `;
 
@@ -52,8 +59,8 @@ const NewUserSchema = Yup.object().shape({
     .required('Vardas negali būti tuščias')
     .matches(/^[a-z]+$/i, 'Netinkamas vardas'),
   age: Yup.number()
-    .min(1, 'Netinkamas amžius')
-    .max(120, 'Netinkamas amžius')
+    .min(1, 'Netinkamas amžius, turi būti nuo 1-o meto.')
+    .max(120, 'Netinkamas amžius, turi būti iki 120-ties metų')
     .required('Amžius negali būti tuščias'),
   email: Yup.string()
     .email('Netinkamas el. paštas')
@@ -118,7 +125,7 @@ export default function AddEditUserForm() {
           });
       }}
     >
-      {({ isSubmitting }) => (
+      {({ errors, touched, isSubmitting }) => (
         <StyledForm>
           <div>
             <label htmlFor="name">Vardas</label>
@@ -126,6 +133,7 @@ export default function AddEditUserForm() {
               type="name"
               name="name"
               placeholder="Įveskite vartotojo vardą..."
+              className={errors.name && touched.name ? 'error-border' : null}
             />
             <ErrorMessage
               name="name"
@@ -140,6 +148,7 @@ export default function AddEditUserForm() {
               type="number"
               name="age"
               placeholder="Įveskite vartotojo amžių..."
+              className={errors.age && touched.age ? 'error-border' : null}
             />
             <ErrorMessage
               name="age"
@@ -154,6 +163,7 @@ export default function AddEditUserForm() {
               type="email"
               name="email"
               placeholder="Įveskite vartotojo el. paštą..."
+              className={errors.email && touched.email ? 'error-border' : null}
             />
             <ErrorMessage
               name="email"
@@ -168,6 +178,7 @@ export default function AddEditUserForm() {
               type="password"
               name="password"
               placeholder="Įveskite vartotojo slaptažodį..."
+              className={errors.password && touched.password ? 'error-border' : null}
             />
             <ErrorMessage
               name="password"
@@ -182,6 +193,7 @@ export default function AddEditUserForm() {
               type="password"
               name="passwordConfirmation"
               placeholder="Pakartokite slaptažodį..."
+              className={errors.passwordConfirmation && touched.passwordConfirmation ? 'error-border' : null}
             />
             <ErrorMessage
               name="passwordConfirmation"

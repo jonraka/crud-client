@@ -43,6 +43,13 @@ const StyledForm = styled(Form)`
     background-color: red;
     border-radius: 5px;
     margin-bottom: 10px;
+    color: white;
+    text-shadow: 1px 1px black, 1px 1px black, 2px 2px black, 1px 1px 5px black;
+    font-weight: bold;
+  }
+
+  & .error-border {
+    border-color: red !important;
   }
 `;
 
@@ -185,7 +192,7 @@ export default function EditUserForm({ userId }) {
           });
       }}
     >
-      {({ isSubmitting }) => (
+      {({errors,  isSubmitting }) => (
         <StyledForm>
           <div>
             <label htmlFor="name">Vardas</label>
@@ -193,6 +200,7 @@ export default function EditUserForm({ userId }) {
               type="name"
               name="name"
               placeholder="Įveskite vartotojo vardą..."
+              className={errors.name ? 'error-border' : null}
             />
             <ErrorMessage
               name="name"
@@ -207,6 +215,7 @@ export default function EditUserForm({ userId }) {
               type="number"
               name="age"
               placeholder="Įveskite vartotojo amžių..."
+              className={errors.age ? 'error-border' : null}
             />
             <ErrorMessage
               name="age"
@@ -221,6 +230,7 @@ export default function EditUserForm({ userId }) {
               type="email"
               name="email"
               placeholder="Įveskite vartotojo el. paštą..."
+              className={errors.email ? 'error-border' : null}
             />
             <ErrorMessage
               name="email"
@@ -235,6 +245,7 @@ export default function EditUserForm({ userId }) {
               type="password"
               name="password"
               placeholder="Įveskite vartotojo slaptažodį..."
+              className={errors.password ? 'error-border' : null}
             />
             <ErrorMessage
               name="password"
@@ -249,6 +260,7 @@ export default function EditUserForm({ userId }) {
               type="password"
               name="passwordConfirmation"
               placeholder="Pakartokite slaptažodį..."
+              className={errors.passwordConfirmation ? 'error-border' : null}
             />
             <ErrorMessage
               name="passwordConfirmation"

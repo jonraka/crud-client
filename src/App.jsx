@@ -9,12 +9,10 @@ import DeleteUserPage from './Pages/DeleteUserPage';
 export default function App() {
   return (
     <Routes>
-      <Route path="/users">
-        <Route path="/users/add" element={<AddUserPage />} />
-        <Route path="/users/edit/:userId" element={<EditUserPage />} />
-        <Route path="/users/delete/:userId" element={<DeleteUserPage />} />
-        <Route index element={<UsersPage />} />
-      </Route>
+      <Route path="/users/add" element={<AddUserPage />} />
+      <Route path="/users/edit/:userId" element={<EditUserPage />} />
+      <Route path="/users/delete/:userId" element={<DeleteUserPage />} />
+      <Route path="/users" element={<UsersPage />} />
       <Route path="/" element={<Navigate to="/users" />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
