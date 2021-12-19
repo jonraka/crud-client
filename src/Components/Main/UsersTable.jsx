@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components";
 import Button from "../UI/Button";
+import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
 
 const StyledTable = styled.table`
     width: 100%;
@@ -51,6 +53,8 @@ export default function UsersTable() {
         error: null
     })
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         let isSubscribed = true;
 
@@ -61,13 +65,11 @@ export default function UsersTable() {
             if (!isSubscribed) return;
             if (res.error) throw new Error(res.error);
 
-            setTimeout(() => {
-                setState({
-                    loading: false,
-                    data: res.data,
-                    error: null
-                })
-            }, 2000);
+            setState({
+                loading: false,
+                data: res.data,
+                error: null
+            })
         }).catch(err => {
             if (!isSubscribed) return;
 
@@ -106,7 +108,7 @@ export default function UsersTable() {
                                         <td>{age}</td>
                                         <td>{email}</td>
                                         <td>
-                                            <Button>Redaguoti</Button>
+                                            <Button onClick={() => navigate(`/users/edit/${_id}`, { replace: false })}>Redaguoti</Button>
                                             <Button>Ištrinti</Button>
                                         </td>
                                     </tr>

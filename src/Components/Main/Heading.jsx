@@ -13,12 +13,12 @@ const StyledHeading = styled.div`
     }
 `;
 
-export default function Heading({ title, children }) {
+export default function Heading({ title = "", backPath = "/", children }) {
     return (
         <StyledHeading>
             <div className='heading-left'>{title}</div>
             <div className='heading-right'>
-                {children ? children : <Link to="/">
+                {children ? children : <Link to={backPath}>
                     <Button>Grįžti atgal</Button>
                 </Link>}
             </div>

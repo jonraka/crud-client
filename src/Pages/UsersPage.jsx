@@ -8,7 +8,7 @@ export default function UsersPage() {
     return (
         <Container>
             <Heading title="Vartotojai">
-                <Link to="/add-user">
+                <Link to="/users/add">
                     <Button>Pridėti naują vartotoją</Button>
                 </Link>
             </Heading>
