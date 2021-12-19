@@ -1,8 +1,8 @@
-import Container from '../Components/Container';
-import UsersTable from '../Components/UsersTable';
-import Button from '../Components/Button';
+import Container from '../Components/Main/Container';
+import UsersTable from '../Components/Main/UsersTable';
+import Button from '../Components/UI/Button';
+import Heading from '../Components/Main/Heading';
 import { Link } from "react-router-dom";
-import Heading from '../Components/Heading';
 
 export default function UsersPage() {
     return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components";
-import Button from "./Button";
+import Button from "../UI/Button";
 
 const StyledTable = styled.table`
     width: 100%;
@@ -13,6 +13,8 @@ const StyledTable = styled.table`
     border-radius: 5px;
     color: white;
     border-collapse: collapse;
+    box-shadow: 5px 5px 5px #00000058;
+    border: 1px solid black;
 
     /* & td {
         width: 25%;
@@ -21,6 +23,7 @@ const StyledTable = styled.table`
     & thead {
         background-color: red;
         color: black;
+        cursor: default;
     }
 
     & th, & td {
@@ -30,10 +33,6 @@ const StyledTable = styled.table`
 
     & thead th:last-of-type {
         min-width: 90px;
-    }
-
-    & td {
-        padding: 5px;
     }
 
     & tbody tr:nth-child(odd){
@@ -59,7 +58,7 @@ export default function UsersTable() {
             if (res.status === 404) throw new Error('Serveris neveikia, pabandykite vėliau.');
             return res.json();
         }).then(res => {
-            if(!isSubscribed) return;
+            if (!isSubscribed) return;
             if (res.error) throw new Error(res.error);
 
             setTimeout(() => {
@@ -70,7 +69,7 @@ export default function UsersTable() {
                 })
             }, 2000);
         }).catch(err => {
-            if(!isSubscribed) return;
+            if (!isSubscribed) return;
 
             setState({
                 loading: false,
@@ -96,20 +95,23 @@ export default function UsersTable() {
                 </tr>
             </thead>
             <tbody>
-                {state.loading && <tr><td colSpan={5}>Kraunama</td></tr>}
-                {state.error && <tr><td colSpan={5}>{state.error}</td></tr>}
-                {state.data && state.data.map(({ _id, name, age, email }) =>
-                    <tr key={_id}>
-                        <td>{_id}</td>
-                        <td>{name}</td>
-                        <td>{age}</td>
-                        <td>{email}</td>
-                        <td>
-                            <Button>Redaguoti</Button>
-                            <Button>Ištrinti</Button>
-                        </td>
-                    </tr>
-                )}
+                {
+                    state.loading ? <tr><td colSpan={5}>Kraunama</td></tr> :
+                        state.error ? <tr><td colSpan={5}>{state.error}</td></tr> :
+                            state.data && state.data.length ?
+                                state.data.map(({ _id, name, age, email }) =>
+                                    <tr key={_id}>
+                                        <td>{_id}</td>
+                                        <td>{name}</td>
+                                        <td>{age}</td>
+                                        <td>{email}</td>
+                                        <td>
+                                            <Button>Redaguoti</Button>
+                                            <Button>Ištrinti</Button>
+                                        </td>
+                                    </tr>
+                                ) : <tr><td colSpan={5}>Vartotojai nerasti, pridėkite bent vieną vartotoją.</td></tr>
+                }
             </tbody>
         </StyledTable>
     )

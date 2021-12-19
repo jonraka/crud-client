@@ -1,5 +1,5 @@
-import Container from "../Components/Container"
-import Heading from "../Components/Heading"
+import Container from "../Components/Main/Container";
+import Heading from "../Components/Main/Heading";
 
 export default function PageNotFoundPage() {
     return (

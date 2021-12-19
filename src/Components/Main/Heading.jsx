@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Button from './Button';
+import Button from '../UI/Button';
 
 const StyledHeading = styled.div`
     display: flex;
